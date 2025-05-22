@@ -276,6 +276,6 @@ This project is open-source and available under the [MIT License](/LICENSE).
 ## 8. Additional considerations
 
 Should you want to interact with your database of tasks, consider installing the db browser for sqlite
-
+![sqlite db browser](/public/images/sqlite_db_browser.png)
 ## 9. Contribution
 Just make a pr dude 😎
