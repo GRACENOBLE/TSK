@@ -281,4 +281,4 @@ Should you want to interact with your database of tasks, consider installing the
 Just make a pr dude 😎
 
 ## 10. Roadmap.sh
-This challenge was originally atarted by [Roadmap.sh](https://roadmap.sh/projects/task-tracker)
+This challenge was originally started by [Roadmap.sh](https://roadmap.sh/projects/task-tracker)
