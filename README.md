@@ -1,23 +1,27 @@
+# TSK
+
 A simple yet powerful CLI application for managing your daily tasks. Built with Python and SQLite, it allows you to add, list, mark tasks as complete, and delete tasks directly from your terminal.
 
 ## Table of Contents
 
-- [Features](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#1-features)
-- [Technologies Used](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#2-technologies-used)
-- [Project Structure](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#3-project-structure)
-- [Getting Started](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#4-getting-started)
-    - [Prerequisites](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#prerequisites)
-    - [Installation](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#installation)
-    - [Database Initialization](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#database-initialization)
-- [Usage](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#5-usage)
-    - [tsk Command Overview](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#tsk-command-overview)
-    - [add command](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#add-command)
-    - [list command](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#list-command)
-    - [complete command](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#complete-command)
-    - [delete command](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#delete-command)
-- [Getting Help](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#getting-help)
-- [Future Enhancements](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#6-future-enhancements)
-- [License](https://chatgpt.com/c/682f1575-7670-8010-8ef1-0bcff2cb666e#7-license)
+- [Features](#1-features)
+- [Technologies Used](#2-technologies-used)
+- [Project Structure](#3-project-structure)
+- [Getting Started](#4-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Database Initialization](#database-initialization)
+- [Usage](#5-usage)
+  - [tsk Command Overview](#tsk-command-overview)
+  - [add command](#add-command)
+  - [list command](#list-command)
+  - [complete command](#complete-command)
+  - [delete command](#delete-command)
+- [Getting Help](#getting-help)
+- [Future Enhancements](#6-future-enhancements)
+- [License](#7-license)
+- [Additional considerations](#8-additional-considerations)
+- [contribution](#8-contribution)
 
 ## 1. Features
 
@@ -75,16 +79,22 @@ Follow these steps to set up and run the To-Do CLI application on your local mac
 git clone https://github.com/GRACENOBLE/todo_cli.git
 ```
 
+![image](/public/images/cloning.png)
+
 **Navigate to the Project Directory:**
 
 ```bash
 cd todo_cli
 ```
 
+![image](/public/images/cd.png)
+
 **Create and Activate a Virtual Environment:**
 
 ```bash
 # Create the virtual environment
+python -m venv .venv
+#or
 python3 -m venv .venv
 
 # Activate the virtual environment:
@@ -100,12 +110,15 @@ source .venv/bin/activate
 ```
 
 You should see `(.venv)` or similar at the beginning of your terminal prompt, indicating the virtual environment is active.
+![Activate the environment](/public/images/activate_environment.png)
 
 **Install Project in Editable Mode:**
 
 ```bash
 pip install -e .
 ```
+
+![install in edit mode](/public/images/install_in_edit_mode.png)
 
 ### Database Initialization
 
@@ -115,6 +128,8 @@ The first time you run any `tsk` command (e.g., `tsk add "My first task"`), the 
 
 - Create the `tasks.db` file in your project's root directory if it doesn't already exist.
 - Set up the necessary `tasks` table structure inside that `tasks.db` file.
+
+![database](/public/images/database.png)
 
 This ensures a clean and automatic setup without any manual database configuration required from your end.
 
@@ -158,6 +173,7 @@ tsk add "Plan weekend trip" -d "next week"
 ### list command
 
 Lists tasks in your to-do list. By default, it shows only pending tasks.
+![list yoour todos](/public/images/list.png)
 
 ```bash
 tsk list [--all | --pending | --completed]
@@ -203,6 +219,8 @@ tsk complete 1
 # Output: Task 1 'Finish project report' is already completed.
 ```
 
+![complete task](/public/images/complete.png)
+
 ### delete command
 
 Deletes a task from the to-do list.
@@ -224,6 +242,8 @@ tsk delete 3
 tsk delete 2 --force
 ```
 
+![delete task](/public/images/delete.png)
+
 ## Getting Help
 
 You can always get help for the main application or specific commands using the `--help` flag:
@@ -235,6 +255,8 @@ tsk --help
 # Get help for the 'add' command
 tsk add --help
 ```
+
+![ask for help](/public/images/help.png)
 
 ## 6. Future Enhancements
 
@@ -249,4 +271,11 @@ Here are some ideas for extending this application:
 
 ## 7. License
 
-This project is open-source and available under the MIT License.
+This project is open-source and available under the [MIT License](/LICENSE).
+
+## 8. Additional considerations
+
+Should you want to interact with your database of tasks, consider installing the db browser for sqlite
+
+## 9. Contribution
+Just make a pr dude 😎
