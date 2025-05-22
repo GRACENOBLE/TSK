@@ -1,5 +1,5 @@
 # TSK
-
+![tasks](/public/images/tasks.png)
 A simple yet powerful CLI application for managing your daily tasks. Built with Python and SQLite, it allows you to add, list, mark tasks as complete, and delete tasks directly from your terminal.
 
 ## Table of Contents
