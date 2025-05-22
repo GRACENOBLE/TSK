@@ -5,7 +5,7 @@ from rich.table import Table
 from rich.text import Text
 from rich.box import MINIMAL
 
-from app.database import add_task, get_all_tasks, get_task_by_id, init_db, update_task_completion
+from app.database import add_task, delete_task, get_all_tasks, get_task_by_id, init_db, update_task_completion
 from app.models import Task
 from app.utils import parse_due_date
 
@@ -143,6 +143,40 @@ def complete(
     except Exception as e:
         console.print(f"[bold red]Failed to complete task:[/bold red] {e}")
         raise typer.Exit(code=1)
+    
+@app.command()
+def delete(
+    task_id: int = typer.Argument(..., help="The ID of the task to delete."),
+    force: bool = typer.Option(False, "--force", "-f", help="Force deletion without confirmation.")
+):
+    """
+    Deletes a task from the to-do list.
+    """
+    try:
+        task = get_task_by_id(task_id)
+        if not task:
+            console.print(f"[bold red]Error:[/bold red] Task with ID [cyan]{task_id}[/cyan] not found.")
+            raise typer.Exit(code=1)
+
+        if not force:
+            confirm = console.input(
+                f"[yellow]Are you sure you want to delete task [cyan]{task_id}[/cyan] '[bold]{task.description}[/bold]'? (y/N): [/yellow]"
+            )
+            if confirm.lower() not in ["y", "yes"]:
+                console.print("[dim]Deletion cancelled.[/dim]")
+                raise typer.Exit() # Exit gracefully without error code
+
+        deleted = delete_task(task_id)
+        if deleted:
+            console.print(f"[green]Deleted task [cyan]{task_id}[/cyan] '[bold]{task.description}[/bold]'. 🗑️[/green]")
+        else:
+            console.print(f"[bold red]Error:[/bold red] Could not delete task [cyan]{task_id}[/cyan].")
+            raise typer.Exit(code=1)
+
+    except Exception as e:
+        console.print(f"[bold red]Failed to delete task:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
 
 if __name__ == "__main__":
     app()

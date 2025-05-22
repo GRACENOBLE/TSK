@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "todo-cli-app"
+version = "0.1.0"
+description = "A simple command-line interface for managing to-do tasks."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+  { name = "Grace Noble", email = "devnoble@gmail.com" }
+]
+keywords = ["todo", "cli", "task-manager"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "typer[rich]>=0.9.0",
+    "python-dateutil>=2.8.0",
+]
+
+[project.scripts]
+tsk = "app.main:app"

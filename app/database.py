@@ -129,3 +129,24 @@ def update_task_completion(task_id: int, completed: bool) -> bool:
         raise
     finally:
         conn.close()
+        
+def delete_task(task_id: int) -> bool:
+    """
+    Deletes a task from the database by its ID.
+    Returns True if the task was deleted, False otherwise (e.g., task not found).
+    """
+    conn = _get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "DELETE FROM tasks WHERE id = ?",
+            (task_id,)
+        )
+        conn.commit()
+        return cursor.rowcount > 0 # Returns number of rows affected
+    except sqlite3.Error as e:
+        print(f"Error deleting task: {e}")
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
