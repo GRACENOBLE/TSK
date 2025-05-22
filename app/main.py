@@ -5,7 +5,7 @@ from rich.table import Table
 from rich.text import Text
 from rich.box import MINIMAL
 
-from app.database import add_task, get_all_tasks, init_db
+from app.database import add_task, get_all_tasks, get_task_by_id, init_db, update_task_completion
 from app.models import Task
 from app.utils import parse_due_date
 
@@ -114,6 +114,34 @@ def list_tasks(
 
     except Exception as e:
         console.print(f"[bold red]Failed to list tasks:[/bold red] {e}")
+        raise typer.Exit(code=1)
+    
+@app.command()
+def complete(
+    task_id: int = typer.Argument(..., help="The ID of the task to mark as complete."),
+):
+    """
+    Marks a task as complete.
+    """
+    try:
+        task = get_task_by_id(task_id)
+        if not task:
+            console.print(f"[bold red]Error:[/bold red] Task with ID [cyan]{task_id}[/cyan] not found.")
+            raise typer.Exit(code=1)
+
+        if task.completed:
+            console.print(f"[yellow]Task [cyan]{task_id}[/cyan] '[bold]{task.description}[/bold]' is already completed.[/yellow]")
+            return
+
+        updated = update_task_completion(task_id, True)
+        if updated:
+            console.print(f"[green]Marked task [cyan]{task_id}[/cyan] '[bold]{task.description}[/bold]' as complete. ✅[/green]")
+        else:
+            console.print(f"[bold red]Error:[/bold red] Could not mark task [cyan]{task_id}[/cyan] as complete.")
+            raise typer.Exit(code=1)
+
+    except Exception as e:
+        console.print(f"[bold red]Failed to complete task:[/bold red] {e}")
         raise typer.Exit(code=1)
 
 if __name__ == "__main__":
