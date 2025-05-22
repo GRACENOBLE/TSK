@@ -5,23 +5,23 @@ class Task:
     def __init__(
         self,
         description: str,
-        due_date: Optional[str] = None,
+        due_date: Optional[str] = None, #'YYYY-MM-DD'
         completed: bool = False,
-        id: Optional[int] = None,
+        id: Optional[int] = None,      
         created_at: Optional[str] = None
     ):
         self.id = id
         self.description = description
+        self.created_at = created_at if created_at else datetime.datetime.now().isoformat()
         self.due_date = due_date
         self.completed = completed
-        self.created_at = created_at
 
     def __repr__(self):
-            """String representation for debugging."""
-            status = "✅" if self.completed else "⏳"
-            due = f" (Due: {self.due_date})" if self.due_date else ""
-            return f"{status} Task {self.id}: {self.description}{due}"
-            
+        """String representation for debugging."""
+        status = "✅" if self.completed else "⏳"
+        due = f" (Due: {self.due_date})" if self.due_date else ""
+        return f"{status} Task {self.id}: {self.description}{due}"
+
     def to_dict(self):
         """Converts Task object to a dictionary (useful for debugging or future extensions)."""
         return {
@@ -31,7 +31,7 @@ class Task:
             "due_date": self.due_date,
             "completed": self.completed
         }
-        
+
     @classmethod
     def from_db_row(cls, row: dict):
         """Creates a Task object from a database row (assuming row_factory is set to sqlite3.Row)."""
@@ -40,5 +40,5 @@ class Task:
             description=row['description'],
             created_at=row['created_at'],
             due_date=row['due_date'],
-            completed=bool(row['completed']) # SQLite stores booleans as 0 or 1
+            completed=bool(row['completed'])
         )
