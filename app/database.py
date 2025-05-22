@@ -33,4 +33,99 @@ def init_db():
     """)
     conn.commit()
     conn.close()
-# end def
+
+def add_task (task: Task)-> Task:
+    """
+    Adds a new task to the database.
+    The task object's ID will be updated with the generated database ID.
+    """
+    
+    conn = _get_db_connection()
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute(
+            "INSERT INTO tasks (description, created_at, due_date, completed) VALUES (?, ?, ?, ?)",
+            (task.description, task.created_at, task.due_date, int(task.completed))
+        )
+        task.id = cursor.lastrowid 
+        conn.commit()
+        return task
+    except sqlite3.Error as e:
+        print(f"Error adding task: {e}")
+        conn.rollback() 
+        raise
+    finally:
+        conn.close()
+        
+def get_all_tasks(completed: Optional[bool] = None) -> List[Task]:
+    """
+    Retrieves all tasks from the database.
+    Optionally filters by completion status.
+    """
+    conn = _get_db_connection()
+    cursor = conn.cursor()
+    tasks = []
+    try:
+        query = "SELECT id, description, created_at, due_date, completed FROM tasks"
+        params = []
+        if completed is not None:
+            query += " WHERE completed = ?"
+            params.append(int(completed))
+
+        query += " ORDER BY created_at DESC"
+
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        for row in rows:
+            tasks.append(Task.from_db_row(row))
+    except sqlite3.Error as e:
+        print(f"Error retrieving tasks: {e}")
+        raise
+    finally:
+        conn.close()
+    return tasks
+
+def get_task_by_id(task_id: int) -> Optional[Task]:
+    """
+    Retrieves a single task by its ID.
+    Returns None if the task is not found.
+    """
+    conn = _get_db_connection()
+    cursor = conn.cursor()
+    task = None
+    try:
+        cursor.execute(
+            "SELECT id, description, created_at, due_date, completed FROM tasks WHERE id = ?",
+            (task_id,)
+        )
+        row = cursor.fetchone()
+        if row:
+            task = Task.from_db_row(row)
+    except sqlite3.Error as e:
+        print(f"Error retrieving task by ID: {e}")
+        raise
+    finally:
+        conn.close()
+    return task
+
+def update_task_completion(task_id: int, completed: bool) -> bool:
+    """
+    Updates the completion status of a task by its ID.
+    Returns True if the task was updated, False otherwise (e.g., task not found).
+    """
+    conn = _get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "UPDATE tasks SET completed = ? WHERE id = ?",
+            (int(completed), task_id)
+        )
+        conn.commit()
+        return cursor.rowcount > 0 
+    except sqlite3.Error as e:
+        print(f"Error updating task completion: {e}")
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
